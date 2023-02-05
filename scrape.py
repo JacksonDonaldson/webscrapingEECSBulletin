@@ -61,6 +61,9 @@ for key in courseDict:
         prev = courseDict[key]
         courseDict[key] = re.sub('Minimum grade of “[a-zA-Z]” required for enforced prerequisites.', '', courseDict[key])
         courseDict[key] = re.sub('(\d credits?)', "", courseDict[key])
-        courseDict[key] = re.sub("[Fewer .*]", "", courseDict[key]) #mildly iffy
-        
+        courseDict[key] = re.sub("\\[Fewer .+\\]", "", courseDict[key]) #mildly iffy
+        courseDict[key] = re.sub("[aA]dvisory [pP]rerequisite.*", "", courseDict[key])
+        courseDict[key] = re.sub("Minimum .*\.", "", courseDict[key])
+        courseDict[key] = re.sub("(minimum grade of “?[ABCDE]”?)", "", courseDict[key])
+        courseDict[key] = re.sub("()", "", courseDict[key])
     
