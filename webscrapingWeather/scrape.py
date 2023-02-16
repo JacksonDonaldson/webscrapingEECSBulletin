@@ -6,42 +6,9 @@ import asyncio
 import httpx
 import os
 import pickle
+from DailyWeather import DailyWeather
 
 
-class DailyWeather:
-    def __init__(self):
-        self.exists = False
-        self.highTemp = -999
-        self.lowTemp = 999
-        self.avgTemp = 0
-        self.avgTempCount = 0
-        self.precipExists = False
-        self.precipTotal = 0
-        self.temps = []
-
-    
-    def update(self, temp, precipTotal):
-        if temp == None:
-            #print("None temp found")
-            return
-        
-        self.exists = True
-        
-        if temp > self.highTemp:
-            self.highTemp = temp
-        if temp < self.lowTemp:
-            self.lowTemp = temp
-        
-        self.avgTemp = ((self.avgTemp * self.avgTempCount) + temp) / (self.avgTempCount + 1)
-        self.avgTempCount += 1
-        self.temps.append(temp)
-        if(precipTotal):
-            if self.precipExists:
-                print(self)
-                print("double precip total")
-                
-            self.precipExists = True
-            self.precipTotal = precipTotal
         
 data = []
 for i in range(20000):
@@ -101,12 +68,14 @@ async def grabData():
 def main():
     global data
     if(os.path.isfile("weather.dat")):
-        print("grabbing cached data...")
+        
+        print("cached data already found...")
+
         data = pickle.load(open("weather.dat", "rb"))
     else:
         print("Cached data not found!\nGrabbing weather data...")
         asyncio.run(grabData())
-        print("Data scrapped. Please manually clean up the data array, then run 'save'")
+        print("Data scraped. Please manually clean up the data array, then pickle it to weather.dat")
         exit()
 
     
